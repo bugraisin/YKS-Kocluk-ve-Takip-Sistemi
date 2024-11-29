@@ -19,7 +19,6 @@ public class SectionBasedResultController {
                 stmt.setInt(3, result.getTrueNum());
                 stmt.setInt(4, result.getFalseNum());
                 stmt.setFloat(5, result.getNet());
-
                 stmt.executeUpdate();
             }
         } catch (SQLException e) {
@@ -37,7 +36,6 @@ public class SectionBasedResultController {
                 stmt.setFloat(3, result.getNet());
                 stmt.setInt(4, result.getExamID());
                 stmt.setString(5, result.getSectionName());
-
                 stmt.executeUpdate();
             }
         } catch (SQLException e) {
@@ -82,28 +80,28 @@ public class SectionBasedResultController {
         return results;
     }
 
-    // ExamID ve SectionName'e Göre Bölüm Bazlı Sonuç Getir
-    public SectionBasedResult getSectionBasedResultById(int examID, String sectionName) {
+    // Belirli bir ExamID'ye ait tüm bölüm bazlı sonuçları getir
+    public List<SectionBasedResult> getSectionBasedResultsByExamId(int examID) {
+        List<SectionBasedResult> results = new ArrayList<>();
         try (Connection conn = DatabaseManager.getConnection()) {
-            String sql = "SELECT * FROM SectionBasedResult WHERE ExamID = ? AND SectionName = ?";
+            String sql = "SELECT * FROM SectionBasedResult WHERE ExamID = ?";
             try (PreparedStatement stmt = conn.prepareStatement(sql)) {
                 stmt.setInt(1, examID);
-                stmt.setString(2, sectionName);
                 try (ResultSet rs = stmt.executeQuery()) {
-                    if (rs.next()) {
+                    while (rs.next()) {
                         SectionBasedResult result = new SectionBasedResult();
                         result.setExamID(rs.getInt("ExamID"));
                         result.setSectionName(rs.getString("SectionName"));
                         result.setTrueNum(rs.getInt("TrueNum"));
                         result.setFalseNum(rs.getInt("FalseNum"));
                         result.setNet(rs.getFloat("Net"));
-                        return result;
+                        results.add(result);
                     }
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+        return results;
     }
 }

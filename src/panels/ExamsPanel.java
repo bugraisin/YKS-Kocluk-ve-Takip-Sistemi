@@ -4,19 +4,26 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
+import controllers.SectionBasedResultController;
 import forms.ExamForm;
+import models.Course;
 import models.Exam;
 import controllers.ExamController;
+import models.SectionBasedResult;
+
 import javax.swing.table.DefaultTableModel;
 
 public class ExamsPanel extends JPanel {
     private JTable examsTable;
     private ExamController examController;
+    private SectionBasedResultController sectionBasedResultController; // Kontrolcü değişkeni
     private JButton editButton;
     private JButton deleteButton;
+    private JButton viewSectionBasedButton;
 
     public ExamsPanel() {
         examController = new ExamController();
+        sectionBasedResultController = new SectionBasedResultController(); // NESNE OLUŞTURULDU
         setLayout(new BorderLayout());
 
         // Başlık
@@ -59,18 +66,58 @@ public class ExamsPanel extends JPanel {
         deleteButton.addActionListener(e -> deleteSelectedExam());
         deleteButton.setEnabled(false);
 
-        // Seçili satır değiştiğinde düzenle ve sil butonlarının durumunu güncelleme
+        // Bölüm Bazlı Sonuçları Görüntüleme Butonu
+        viewSectionBasedButton = new JButton("Bölüm Bazlı Sonuçları Görüntüle");
+        viewSectionBasedButton.addActionListener(e -> viewSectionBasedResultSelectedExam());
+        viewSectionBasedButton.setEnabled(false);
+
+        // Seçili satır değiştiğinde butonların durumunu güncelleme
         examsTable.getSelectionModel().addListSelectionListener(event -> {
             boolean isRowSelected = examsTable.getSelectedRow() != -1;
             editButton.setEnabled(isRowSelected);
             deleteButton.setEnabled(isRowSelected);
+            viewSectionBasedButton.setEnabled(isRowSelected);
         });
 
         // Butonları panelde düzenle
         buttonPanel.add(addButton);
         buttonPanel.add(editButton);
         buttonPanel.add(deleteButton);
+        buttonPanel.add(viewSectionBasedButton);
         add(buttonPanel, BorderLayout.SOUTH);
+    }
+
+    // Bölüm Bazlı Sonuçları Görüntüleme
+    private void viewSectionBasedResultSelectedExam() {
+        int selectedRow = examsTable.getSelectedRow();
+        if (selectedRow != -1) {
+            int examID = (int) examsTable.getValueAt(selectedRow, 0);
+            List<SectionBasedResult> sectionBasedResults = sectionBasedResultController.getSectionBasedResultsByExamId(examID);
+
+            DefaultTableModel tableModel = new DefaultTableModel();
+            tableModel.addColumn("Bölüm Adı");
+            tableModel.addColumn("Doğru Sayısı");
+            tableModel.addColumn("Yanlış Sayısı");
+            tableModel.addColumn("Net");
+
+            for (SectionBasedResult sectionBasedResult : sectionBasedResults) {
+                Object[] row = {
+                        sectionBasedResult.getSectionName(),
+                        sectionBasedResult.getTrueNum(),
+                        sectionBasedResult.getFalseNum(),
+                        sectionBasedResult.getNet()
+                };
+                tableModel.addRow(row);
+            }
+
+            JTable resultsTable = new JTable(tableModel);
+            JScrollPane scrollPane = new JScrollPane(resultsTable);
+            JDialog dialog = new JDialog();
+            dialog.setTitle("Bölüm Bazlı Sonuçlar");
+            dialog.setSize(600, 400);
+            dialog.add(scrollPane);
+            dialog.setVisible(true);
+        }
     }
 
     // Sınav tablosunu güncelleme

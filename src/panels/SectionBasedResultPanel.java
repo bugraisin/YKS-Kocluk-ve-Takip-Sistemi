@@ -85,23 +85,23 @@ public class SectionBasedResultPanel extends JPanel {
     }
 
     private void editSelectedResult() {
-        int selectedRow = resultsTable.getSelectedRow();
-        if (selectedRow != -1) {
-            int examID = (int) resultsTable.getValueAt(selectedRow, 0);
-            String sectionName = (String) resultsTable.getValueAt(selectedRow, 1);
-            SectionBasedResult result = sectionBasedResultController.getSectionBasedResultById(examID, sectionName);
-
-            SectionBasedResultForm resultForm = new SectionBasedResultForm(resultToEdit -> {
-                result.setTrueNum(resultToEdit.getTrueNum());
-                result.setFalseNum(resultToEdit.getFalseNum());
-                result.setNet(resultToEdit.getNet());
-
-                sectionBasedResultController.updateSectionBasedResult(result);
-                updateResultsTable();
-            });
-
-            resultForm.setVisible(true);
-        }
+//        int selectedRow = resultsTable.getSelectedRow();
+//        if (selectedRow != -1) {
+//            int examID = (int) resultsTable.getValueAt(selectedRow, 0);
+//            String sectionName = (String) resultsTable.getValueAt(selectedRow, 1);
+//            SectionBasedResult result = sectionBasedResultController.getSectionBasedResultById(examID, sectionName);
+//
+//            SectionBasedResultForm resultForm = new SectionBasedResultForm(resultToEdit -> {
+//                result.setTrueNum(resultToEdit.getTrueNum());
+//                result.setFalseNum(resultToEdit.getFalseNum());
+//                result.setNet(resultToEdit.getNet());
+//
+//                sectionBasedResultController.updateSectionBasedResult(result);
+//                updateResultsTable();
+//            });
+//
+//            resultForm.setVisible(true);
+//        }
     }
 
     private void deleteSelectedResult() {

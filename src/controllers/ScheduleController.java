@@ -114,4 +114,31 @@ public class ScheduleController {
         }
         return null;
     }
+
+    // Belirli bir öğrenciye ait programları getir
+    public List<Schedule> getSchedulesByStudentId(int studentID) {
+        List<Schedule> schedules = new ArrayList<>();
+        try (Connection conn = DatabaseManager.getConnection()) {
+            String sql = "SELECT * FROM Schedule WHERE StudentID = ?";
+            try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+                stmt.setInt(1, studentID);
+                try (ResultSet rs = stmt.executeQuery()) {
+                    while (rs.next()) {
+                        Schedule schedule = new Schedule();
+                        schedule.setScheduleID(rs.getInt("ScheduleID"));
+                        schedule.setStudentID(rs.getInt("StudentID"));
+                        schedule.setStartDate(rs.getDate("StartDate"));
+                        schedule.setEndDate(rs.getDate("EndDate"));
+                        schedule.setDescription(rs.getString("Description"));
+                        schedule.setTitle(rs.getString("Title"));
+                        schedules.add(schedule);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return schedules;
+    }
+
 }

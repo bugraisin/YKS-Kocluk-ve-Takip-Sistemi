@@ -1,5 +1,6 @@
 package controllers;
 
+import models.Advisor;
 import models.Student;
 import utils.DatabaseManager;
 
@@ -157,4 +158,53 @@ public class StudentController {
         }
         return student;
     }
+    // Öğrenciye Danışman Ekleme
+    public void addAdvisor(Advisor advisor) {
+        try (Connection conn = DatabaseManager.getConnection()) {
+            String sql = "INSERT INTO Advisor (StudentID, FirstName, LastName, Email, PhoneNo, Major) VALUES (?, ?, ?, ?, ?, ?)";
+            try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+                stmt.setInt(1, advisor.getStudentID());
+                stmt.setString(2, advisor.getFirstName());
+                stmt.setString(3, advisor.getLastName());
+                stmt.setString(4, advisor.getEmail());
+                stmt.setString(5, advisor.getPhoneNo());
+                stmt.setString(6, advisor.getMajor());
+
+                stmt.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Öğrencinin ID'sine göre danışmanlarını alma
+    public List<Advisor> getAdvisorsByStudentId(int studentID) {
+        List<Advisor> advisors = new ArrayList<>();
+        try (Connection conn = DatabaseManager.getConnection()) {
+            String sql = "SELECT * FROM Advisor WHERE StudentID = ?";
+            try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+                stmt.setInt(1, studentID);
+                try (ResultSet rs = stmt.executeQuery()) {
+                    while (rs.next()) {
+                        Advisor advisor = new Advisor();
+                        advisor.setAdvisorID(rs.getInt("AdvisorID"));
+                        advisor.setStudentID(rs.getInt("StudentID"));
+                        advisor.setFirstName(rs.getString("FirstName"));
+                        advisor.setMidName(rs.getString("MidName"));
+                        advisor.setLastName(rs.getString("LastName"));
+                        advisor.setEmail(rs.getString("Email"));
+                        advisor.setPhoneNo(rs.getString("PhoneNo"));
+                        advisor.setMajor(rs.getString("Major"));
+                        advisors.add(advisor);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return advisors;
+    }
+
+
+
 }

@@ -106,4 +106,28 @@ public class CourseController {
         }
         return null;
     }
+    // Belirli bir öğrenciye ait kursları getir
+    public List<Course> getCoursesByStudentId(int studentID) {
+        List<Course> courses = new ArrayList<>();
+        try (Connection conn = DatabaseManager.getConnection()) {
+            String sql = "SELECT * FROM Course WHERE StudentID = ?";
+            try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+                stmt.setInt(1, studentID);
+                try (ResultSet rs = stmt.executeQuery()) {
+                    while (rs.next()) {
+                        Course course = new Course();
+                        course.setCourseID(rs.getInt("CourseID"));
+                        course.setStudentID(rs.getInt("StudentID"));
+                        course.setCourseName(rs.getString("CourseName"));
+                        course.setCategory(rs.getString("Category"));
+                        courses.add(course);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return courses;
+    }
+
 }

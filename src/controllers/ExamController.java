@@ -1,5 +1,6 @@
 package controllers;
 
+import models.Advisor;
 import models.Exam;
 import utils.DatabaseManager;
 
@@ -106,4 +107,28 @@ public class ExamController {
         }
         return null;
     }
+    // Belirli bir öğrenciye ait sınavları getir
+    public List<Exam> getExamsByStudentId(int studentID) {
+        List<Exam> exams = new ArrayList<>();
+        try (Connection conn = DatabaseManager.getConnection()) {
+            String sql = "SELECT * FROM Exam WHERE StudentID = ?";
+            try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+                stmt.setInt(1, studentID);
+                try (ResultSet rs = stmt.executeQuery()) {
+                    while (rs.next()) {
+                        Exam exam = new Exam();
+                        exam.setExamID(rs.getInt("ExamID"));
+                        exam.setStudentID(rs.getInt("StudentID"));
+                        exam.setExamDate(rs.getDate("ExamDate"));
+                        exam.setExamTime(rs.getTime("ExamTime"));
+                        exams.add(exam);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return exams;
+    }
+
 }
