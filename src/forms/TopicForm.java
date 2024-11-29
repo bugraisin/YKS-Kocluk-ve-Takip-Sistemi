@@ -10,24 +10,24 @@ public class TopicForm extends JDialog {
     }
 
     public TopicForm(TopicFormListener listener) {
-        setTitle("Yeni Konu Ekle");
+        setTitle("Create New Topic");
         setSize(400, 300);
         setLayout(new GridLayout(4, 2));
         setModal(true);
 
-        add(new JLabel("Ders ID:"));
+        add(new JLabel("CourseID:"));
         JTextField courseIDField = new JTextField();
         add(courseIDField);
 
-        add(new JLabel("Konu Adı:"));
+        add(new JLabel("TopicName:"));
         JTextField topicNameField = new JTextField();
         add(topicNameField);
 
-        add(new JLabel("Zorluk Seviyesi:"));
+        add(new JLabel("Difficulty:"));
         JTextField difficultyField = new JTextField();
         add(difficultyField);
 
-        JButton saveButton = new JButton("Kaydet");
+        JButton saveButton = new JButton("Save");
         saveButton.addActionListener(e -> {
             try {
                 Topic topic = new Topic();
@@ -38,7 +38,7 @@ public class TopicForm extends JDialog {
                 listener.onTopicSubmitted(topic);
                 dispose();
             } catch (Exception ex) {
-                JOptionPane.showMessageDialog(this, "Lütfen tüm alanları doğru girin!", "Hata", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Please Fill the Boxes Correctly!", "Error", JOptionPane.ERROR_MESSAGE);
             }
         });
         add(saveButton);
@@ -46,7 +46,7 @@ public class TopicForm extends JDialog {
 
     public TopicForm(Topic topic, TopicFormListener listener) {
         this(listener);
-        setTitle("Konuyu Düzenle");
+        setTitle("Update the Topic");
 
         ((JTextField) getContentPane().getComponent(1)).setText(String.valueOf(topic.getCourseID()));
         ((JTextField) getContentPane().getComponent(3)).setText(topic.getTopicName());

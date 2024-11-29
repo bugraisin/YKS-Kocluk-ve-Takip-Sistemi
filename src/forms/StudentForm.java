@@ -11,20 +11,20 @@ public class StudentForm extends JDialog {
 
     public StudentForm(StudentFormListener listener) {
         // Dialog penceresini başlatma
-        setTitle("Yeni Öğrenci Ekle / Düzenle");
+        setTitle("Crate New Student / Update");
         setSize(400, 350);  // Yeterli büyüklükte bir form
         setLayout(new GridLayout(9, 2)); // 9 satır 2 sütun
 
         // Form alanları
-        add(new JLabel("Ad:"));
+        add(new JLabel("FirstName:"));
         JTextField firstNameField = new JTextField();
         add(firstNameField);
 
-        add(new JLabel("Ortanca İsim:"));
+        add(new JLabel("MidName:"));
         JTextField midNameField = new JTextField();
         add(midNameField);
 
-        add(new JLabel("Soyad:"));
+        add(new JLabel("LastName:"));
         JTextField lastNameField = new JTextField();
         add(lastNameField);
 
@@ -32,24 +32,24 @@ public class StudentForm extends JDialog {
         JTextField emailField = new JTextField();
         add(emailField);
 
-        add(new JLabel("Telefon Numarası:"));
+        add(new JLabel("PhoneNo:"));
         JTextField phoneNoField = new JTextField();
         add(phoneNoField);
 
-        add(new JLabel("Sınıf:"));
+        add(new JLabel("ClassNo:"));
         JTextField classField = new JTextField();
         add(classField);
 
-        add(new JLabel("Hedef Üniversite:"));
+        add(new JLabel("GoalUni:"));
         JTextField goalUniField = new JTextField();
         add(goalUniField);
 
-        add(new JLabel("Hedef Bölüm:"));
+        add(new JLabel("GoalMajor:"));
         JTextField goalMajorField = new JTextField();
         add(goalMajorField);
 
         // Kaydet butonu
-        JButton saveButton = new JButton("Kaydet");
+        JButton saveButton = new JButton("Save");
         saveButton.addActionListener(e -> {
             // Formdan alınan verilerle yeni öğrenci nesnesi oluşturma
             try {
@@ -67,7 +67,7 @@ public class StudentForm extends JDialog {
                 listener.onStudentSubmitted(student);
                 dispose(); // Formu kapatma
             } catch (Exception ex) {
-                JOptionPane.showMessageDialog(this, "Lütfen tüm alanları doğru girin!", "Hata", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Please Fill the Boxes Correctly!", "Error", JOptionPane.ERROR_MESSAGE);
             }
         });
         add(saveButton);

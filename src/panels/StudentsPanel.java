@@ -33,7 +33,7 @@ public class StudentsPanel extends JPanel {
     private final JTextField searchClassNoField = new JTextField(10);
     private final JTextField searchGoalUniField = new JTextField(10);
     private final JTextField searchGoalMajorField = new JTextField(10);
-    private final JButton searchButton = new JButton("Ara");
+    private final JButton searchButton = new JButton("Search");
 
     public StudentsPanel() {
         studentController = new StudentController();
@@ -44,21 +44,21 @@ public class StudentsPanel extends JPanel {
         setLayout(new BorderLayout());
 
         // Başlık
-        JLabel title = new JLabel("Öğrenciler", SwingConstants.CENTER);
+        JLabel title = new JLabel("Students", SwingConstants.CENTER);
         title.setFont(new Font("Arial", Font.BOLD, 24));
         add(title, BorderLayout.NORTH);
 
         // JTable için model
         DefaultTableModel tableModel = new DefaultTableModel();
-        tableModel.addColumn("Student ID");
-        tableModel.addColumn("Ad");
-        tableModel.addColumn("Ortanca İsim");
-        tableModel.addColumn("Soyad");
+        tableModel.addColumn("StudentID");
+        tableModel.addColumn("FirstName");
+        tableModel.addColumn("MidName");
+        tableModel.addColumn("LastName");
         tableModel.addColumn("Email");
-        tableModel.addColumn("Telefon");
-        tableModel.addColumn("Sınıf");
-        tableModel.addColumn("Hedef Üniversite");
-        tableModel.addColumn("Hedef Bölüm");
+        tableModel.addColumn("PhoneNo");
+        tableModel.addColumn("ClassNo");
+        tableModel.addColumn("GoalUni");
+        tableModel.addColumn("GoalMajor");
 
         studentsTable = new JTable(tableModel);
         studentsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -69,7 +69,7 @@ public class StudentsPanel extends JPanel {
 
         // Butonlar Paneli
         JPanel buttonPanel = new JPanel();
-        JButton addButton = new JButton("Yeni Öğrenci Ekle");
+        JButton addButton = new JButton("Create New Student");
 
         addButton.addActionListener(e -> {
             StudentForm studentForm = new StudentForm(student -> {
@@ -80,32 +80,32 @@ public class StudentsPanel extends JPanel {
         });
 
         // Düzenle ve Sil butonları
-        editButton = new JButton("Düzenle");
+        editButton = new JButton("Update");
         editButton.addActionListener(e -> editSelectedStudent());
         editButton.setEnabled(false);  // Başlangıçta devre dışı
 
-        deleteButton = new JButton("Sil");
+        deleteButton = new JButton("Delete");
         deleteButton.addActionListener(e -> deleteSelectedStudent());
         deleteButton.setEnabled(false);  // Başlangıçta devre dışı
 
         // Öğrenciye ait sınavları, dersleri, danışmanı ve programları getirme butonları
-        viewExamsButton = new JButton("Sınavları Görüntüle");
+        viewExamsButton = new JButton("Show Exams");
         viewExamsButton.addActionListener(e -> viewExamsOfSelectedStudent());
         viewExamsButton.setEnabled(false);
 
-        viewCoursesButton = new JButton("Dersleri Görüntüle");
+        viewCoursesButton = new JButton("Show Courses");
         viewCoursesButton.addActionListener(e -> viewCoursesOfSelectedStudent());
         viewCoursesButton.setEnabled(false);
 
-        viewAdvisorsButton = new JButton("Danışmanları Görüntüle");
+        viewAdvisorsButton = new JButton("Show Advisors");
         viewAdvisorsButton.addActionListener(e -> viewAdvisorsOfSelectedStudent());
         viewAdvisorsButton.setEnabled(false);
 
-        viewSchedulesButton = new JButton("Programları Görüntüle");
+        viewSchedulesButton = new JButton("Show Schedules");
         viewSchedulesButton.addActionListener(e -> viewSchedulesOfSelectedStudent());
         viewSchedulesButton.setEnabled(false);
 
-        viewTasksButton = new JButton("Görevleri Görüntüle");
+        viewTasksButton = new JButton("Show Tasks");
         viewTasksButton.addActionListener(e -> viewTasksOfSelectedStudent());
         viewTasksButton.setEnabled(false);
 
@@ -123,25 +123,25 @@ public class StudentsPanel extends JPanel {
 
         // Arama Paneli
         JPanel searchPanel = new JPanel(new GridLayout(4, 4, 5, 5));
-        searchPanel.setBorder(BorderFactory.createTitledBorder("Öğrenci Ara"));
+        searchPanel.setBorder(BorderFactory.createTitledBorder("Search Student"));
 
-        searchPanel.add(new JLabel("Ad:"));
+        searchPanel.add(new JLabel("FirstName:"));
         searchPanel.add(searchFirstNameField);
-        searchPanel.add(new JLabel("Ortanca İsim:"));
+        searchPanel.add(new JLabel("MidName:"));
         searchPanel.add(searchMidNameField);
-        searchPanel.add(new JLabel("Soyad:"));
+        searchPanel.add(new JLabel("LastName:"));
         searchPanel.add(searchLastNameField);
 
         searchPanel.add(new JLabel("Email:"));
         searchPanel.add(searchEmailField);
-        searchPanel.add(new JLabel("Telefon:"));
+        searchPanel.add(new JLabel("PhoneNo:"));
         searchPanel.add(searchPhoneField);
-        searchPanel.add(new JLabel("Sınıf:"));
+        searchPanel.add(new JLabel("ClassNo:"));
         searchPanel.add(searchClassNoField);
 
-        searchPanel.add(new JLabel("Hedef Üniversite:"));
+        searchPanel.add(new JLabel("GoalUni:"));
         searchPanel.add(searchGoalUniField);
-        searchPanel.add(new JLabel("Hedef Bölüm:"));
+        searchPanel.add(new JLabel("GoalMajor:"));
         searchPanel.add(searchGoalMajorField);
 
 // Arama butonuna tıklama işlemi
@@ -273,13 +273,13 @@ public class StudentsPanel extends JPanel {
             List<Advisor> advisors = studentController.getAdvisorsByStudentId(studentID);
 
             DefaultTableModel tableModel = new DefaultTableModel();
-            tableModel.addColumn("Danışman ID");
-            tableModel.addColumn("Ad");
-            tableModel.addColumn("Ortanca İsim");
-            tableModel.addColumn("Soyad");
-            tableModel.addColumn("Telefon");
+            tableModel.addColumn("AdvisorID");
+            tableModel.addColumn("FirstName");
+            tableModel.addColumn("MidName");
+            tableModel.addColumn("LastName");
+            tableModel.addColumn("PhoneNo");
             tableModel.addColumn("Email");
-            tableModel.addColumn("Bölüm");
+            tableModel.addColumn("Major");
 
             for (Advisor advisor : advisors) {
                 Object[] row = {
@@ -297,7 +297,7 @@ public class StudentsPanel extends JPanel {
             JTable advisorsTable = new JTable(tableModel);
             JScrollPane scrollPane = new JScrollPane(advisorsTable);
             JDialog dialog = new JDialog();
-            dialog.setTitle("Danışmanlar");
+            dialog.setTitle("Advisors");
             dialog.setSize(800, 400);
             dialog.add(scrollPane);
             dialog.setVisible(true);
@@ -313,9 +313,9 @@ public class StudentsPanel extends JPanel {
             List<Exam> exams = examController.getExamsByStudentId(studentID);
 
             DefaultTableModel tableModel = new DefaultTableModel();
-            tableModel.addColumn("Sınav ID");
-            tableModel.addColumn("Sınav Tarihi");
-            tableModel.addColumn("Sınav Süresi");
+            tableModel.addColumn("ExamID");
+            tableModel.addColumn("ExamDate");
+            tableModel.addColumn("ExamTime");
 
             for (Exam exam : exams) {
                 Object[] row = {
@@ -329,7 +329,7 @@ public class StudentsPanel extends JPanel {
             JTable examsTable = new JTable(tableModel);
             JScrollPane scrollPane = new JScrollPane(examsTable);
             JDialog dialog = new JDialog();
-            dialog.setTitle("Sınavlar");
+            dialog.setTitle("Exams");
             dialog.setSize(600, 400);
             dialog.add(scrollPane);
             dialog.setVisible(true);
@@ -344,9 +344,9 @@ public class StudentsPanel extends JPanel {
             List<Course> courses = courseController.getCoursesByStudentId(studentID);
 
             DefaultTableModel tableModel = new DefaultTableModel();
-            tableModel.addColumn("Ders ID");
-            tableModel.addColumn("Ders Adı");
-            tableModel.addColumn("Türü");
+            tableModel.addColumn("CourseID");
+            tableModel.addColumn("CourseName");
+            tableModel.addColumn("Category");
 
             for (Course course : courses) {
                 Object[] row = {
@@ -360,7 +360,7 @@ public class StudentsPanel extends JPanel {
             JTable coursesTable = new JTable(tableModel);
             JScrollPane scrollPane = new JScrollPane(coursesTable);
             JDialog dialog = new JDialog();
-            dialog.setTitle("Dersler");
+            dialog.setTitle("Courses");
             dialog.setSize(600, 400);
             dialog.add(scrollPane);
             dialog.setVisible(true);
@@ -375,10 +375,10 @@ public class StudentsPanel extends JPanel {
             List<Schedule> schedules = scheduleController.getSchedulesByStudentId(studentID);
 
             DefaultTableModel tableModel = new DefaultTableModel();
-            tableModel.addColumn("Program ID");
-            tableModel.addColumn("Başlangıç Tarihi");
-            tableModel.addColumn("Bitiş Tarihi");
-            tableModel.addColumn("Açıklama");
+            tableModel.addColumn("ScheduleID");
+            tableModel.addColumn("StartDate");
+            tableModel.addColumn("EndDate");
+            tableModel.addColumn("Description");
 
             for (Schedule schedule : schedules) {
                 Object[] row = {
@@ -393,7 +393,7 @@ public class StudentsPanel extends JPanel {
             JTable schedulesTable = new JTable(tableModel);
             JScrollPane scrollPane = new JScrollPane(schedulesTable);
             JDialog dialog = new JDialog();
-            dialog.setTitle("Programlar");
+            dialog.setTitle("Schedules");
             dialog.setSize(600, 400);
             dialog.add(scrollPane);
             dialog.setVisible(true);
@@ -407,9 +407,9 @@ public class StudentsPanel extends JPanel {
             List<Task> tasks = taskController.getTasksByStudentId(studentID);
 
             DefaultTableModel tableModel = new DefaultTableModel();
-            tableModel.addColumn("Task ID");
-            tableModel.addColumn("Student ID");
-            tableModel.addColumn("Advisor ID");
+            tableModel.addColumn("TaskID");
+            tableModel.addColumn("StudentID");
+            tableModel.addColumn("AdvisorID");
             tableModel.addColumn("Text");
             tableModel.addColumn("DueDate");
 
@@ -427,7 +427,7 @@ public class StudentsPanel extends JPanel {
             JTable schedulesTable = new JTable(tableModel);
             JScrollPane scrollPane = new JScrollPane(schedulesTable);
             JDialog dialog = new JDialog();
-            dialog.setTitle("Programlar");
+            dialog.setTitle("Tasks");
             dialog.setSize(600, 400);
             dialog.add(scrollPane);
             dialog.setVisible(true);

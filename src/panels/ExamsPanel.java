@@ -27,16 +27,16 @@ public class ExamsPanel extends JPanel {
         setLayout(new BorderLayout());
 
         // Başlık
-        JLabel title = new JLabel("Sınavlar", SwingConstants.CENTER);
+        JLabel title = new JLabel("Exams", SwingConstants.CENTER);
         title.setFont(new Font("Arial", Font.BOLD, 24));
         add(title, BorderLayout.NORTH);
 
         // JTable için model
         DefaultTableModel tableModel = new DefaultTableModel();
-        tableModel.addColumn("Exam ID");
-        tableModel.addColumn("Öğrenci ID");
-        tableModel.addColumn("Sınav Tarihi");
-        tableModel.addColumn("Sınav Süresi");
+        tableModel.addColumn("ExamID");
+        tableModel.addColumn("StudentID");
+        tableModel.addColumn("ExamDate");
+        tableModel.addColumn("ExamTime");
 
         examsTable = new JTable(tableModel);
         examsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -47,7 +47,7 @@ public class ExamsPanel extends JPanel {
 
         // Butonlar Paneli
         JPanel buttonPanel = new JPanel();
-        JButton addButton = new JButton("Yeni Sınav Ekle");
+        JButton addButton = new JButton("Create New Exam");
 
         addButton.addActionListener(e -> {
             ExamForm examForm = new ExamForm(exam -> {
@@ -58,16 +58,16 @@ public class ExamsPanel extends JPanel {
         });
 
         // Düzenle ve Sil butonları
-        editButton = new JButton("Düzenle");
+        editButton = new JButton("Update");
         editButton.addActionListener(e -> editSelectedExam());
         editButton.setEnabled(false);
 
-        deleteButton = new JButton("Sil");
+        deleteButton = new JButton("Delete");
         deleteButton.addActionListener(e -> deleteSelectedExam());
         deleteButton.setEnabled(false);
 
         // Bölüm Bazlı Sonuçları Görüntüleme Butonu
-        viewSectionBasedButton = new JButton("Bölüm Bazlı Sonuçları Görüntüle");
+        viewSectionBasedButton = new JButton("See SectionBasedResults");
         viewSectionBasedButton.addActionListener(e -> viewSectionBasedResultSelectedExam());
         viewSectionBasedButton.setEnabled(false);
 

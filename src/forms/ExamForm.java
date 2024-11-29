@@ -13,26 +13,26 @@ public class ExamForm extends JDialog {
     }
 
     public ExamForm(ExamFormListener listener) {
-        setTitle("Yeni Sınav Ekle");
+        setTitle("CreateNewExam");
         setSize(400, 300);
         setLayout(new GridLayout(4, 2));
         setModal(true);
 
         // Form alanları
-        add(new JLabel("Öğrenci ID:"));
+        add(new JLabel("StudentID:"));
         JTextField studentIDField = new JTextField();
         add(studentIDField);
 
-        add(new JLabel("Sınav Tarihi (YYYY-MM-DD):"));
+        add(new JLabel("ExamDate(YYYY-MM-DD):"));
         JTextField examDateField = new JTextField();
         add(examDateField);
 
-        add(new JLabel("Sınav Süre (HH:MM):"));
+        add(new JLabel("ExamTime(HH:MM):"));
         JTextField examTimeField = new JTextField();
         add(examTimeField);
 
         // Kaydet butonu
-        JButton saveButton = new JButton("Kaydet");
+        JButton saveButton = new JButton("Save");
         saveButton.addActionListener(e -> {
             try {
                 Exam exam = new Exam();
@@ -49,7 +49,7 @@ public class ExamForm extends JDialog {
                 listener.onExamSubmitted(exam);
                 dispose();
             } catch (NumberFormatException | ParseException ex) {
-                JOptionPane.showMessageDialog(this, "Lütfen tüm alanları doğru girin!", "Hata", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Please Fill the Boxes Correctly", "Error", JOptionPane.ERROR_MESSAGE);
             }
         });
         add(saveButton);
@@ -57,7 +57,7 @@ public class ExamForm extends JDialog {
 
     public ExamForm(Exam exam, ExamFormListener listener) {
         this(listener);
-        setTitle("Sınavı Düzenle");
+        setTitle("Update the Exam");
 
         // Mevcut bilgileri form alanlarına doldur
         ((JTextField) getContentPane().getComponent(1)).setText(String.valueOf(exam.getStudentID()));

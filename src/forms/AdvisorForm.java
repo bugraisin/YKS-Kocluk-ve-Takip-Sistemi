@@ -10,7 +10,7 @@ public class AdvisorForm extends JDialog {
     }
 
     public AdvisorForm(AdvisorFormListener listener) {
-        setTitle("Danışman Formu");
+        setTitle("Advisor Form");
         setSize(400, 300);
         setLayout(new GridLayout(8, 2));
         setModal(true);
@@ -21,15 +21,15 @@ public class AdvisorForm extends JDialog {
         JTextField studentIdField = new JTextField();
         add(studentIdField);
 
-        add(new JLabel("Ad:"));
+        add(new JLabel("FirstName:"));
         JTextField firstNameField = new JTextField();
         add(firstNameField);
 
-        add(new JLabel("Ortanca İsim:"));
+        add(new JLabel("MidName:"));
         JTextField midNameField = new JTextField();
         add(midNameField);
 
-        add(new JLabel("Soyad:"));
+        add(new JLabel("LastName:"));
         JTextField lastNameField = new JTextField();
         add(lastNameField);
 
@@ -37,16 +37,16 @@ public class AdvisorForm extends JDialog {
         JTextField emailField = new JTextField();
         add(emailField);
 
-        add(new JLabel("Telefon Numarası:"));
+        add(new JLabel("PhoneNo:"));
         JTextField phoneNoField = new JTextField();
         add(phoneNoField);
 
-        add(new JLabel("Uzmanlık:"));
+        add(new JLabel("Major:"));
         JTextField majorField = new JTextField();
         add(majorField);
 
         // Kaydet butonu
-        JButton saveButton = new JButton("Kaydet");
+        JButton saveButton = new JButton("Save");
         saveButton.addActionListener(e -> {
             Advisor advisor = new Advisor();
             advisor.setStudentID(Integer.parseInt(studentIdField.getText()));
@@ -65,7 +65,7 @@ public class AdvisorForm extends JDialog {
 
     public AdvisorForm(Advisor advisor, AdvisorFormListener listener) {
         this(listener);
-        setTitle("Danışmanı Düzenle");
+        setTitle("Update the Advisor");
 
         // Mevcut bilgileri form alanlarına doldur
         ((JTextField) getContentPane().getComponent(1)).setText(advisor.getFirstName());

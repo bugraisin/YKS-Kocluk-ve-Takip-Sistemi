@@ -19,15 +19,15 @@ public class CoursesPanel extends JPanel {
         courseController = new CourseController();
         setLayout(new BorderLayout());
 
-        JLabel title = new JLabel("Dersler", SwingConstants.CENTER);
+        JLabel title = new JLabel("Courses", SwingConstants.CENTER);
         title.setFont(new Font("Arial", Font.BOLD, 24));
         add(title, BorderLayout.NORTH);
 
         DefaultTableModel tableModel = new DefaultTableModel();
-        tableModel.addColumn("Course ID");
-        tableModel.addColumn("Öğrenci ID");
-        tableModel.addColumn("Ders Adı");
-        tableModel.addColumn("Kategori");
+        tableModel.addColumn("CourseID");
+        tableModel.addColumn("StudentID");
+        tableModel.addColumn("CourseName");
+        tableModel.addColumn("Category");
 
         coursesTable = new JTable(tableModel);
         coursesTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -37,7 +37,7 @@ public class CoursesPanel extends JPanel {
         add(scrollPane, BorderLayout.CENTER);
 
         JPanel buttonPanel = new JPanel();
-        JButton addButton = new JButton("Yeni Ders Ekle");
+        JButton addButton = new JButton("Create New Course");
 
         addButton.addActionListener(e -> {
             CourseForm courseForm = new CourseForm(course -> {
@@ -47,11 +47,11 @@ public class CoursesPanel extends JPanel {
             courseForm.setVisible(true);
         });
 
-        editButton = new JButton("Düzenle");
+        editButton = new JButton("Update");
         editButton.addActionListener(e -> editSelectedCourse());
         editButton.setEnabled(false);
 
-        deleteButton = new JButton("Sil");
+        deleteButton = new JButton("Delete");
         deleteButton.addActionListener(e -> deleteSelectedCourse());
         deleteButton.setEnabled(false);
 

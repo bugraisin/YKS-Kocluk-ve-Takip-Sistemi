@@ -19,15 +19,15 @@ public class TopicsPanel extends JPanel {
         topicController = new TopicController();
         setLayout(new BorderLayout());
 
-        JLabel title = new JLabel("Konular", SwingConstants.CENTER);
+        JLabel title = new JLabel("Topics", SwingConstants.CENTER);
         title.setFont(new Font("Arial", Font.BOLD, 24));
         add(title, BorderLayout.NORTH);
 
         DefaultTableModel tableModel = new DefaultTableModel();
-        tableModel.addColumn("Topic ID");
-        tableModel.addColumn("Ders ID");
-        tableModel.addColumn("Konu Adı");
-        tableModel.addColumn("Zorluk Seviyesi");
+        tableModel.addColumn("TopicID");
+        tableModel.addColumn("CourseID");
+        tableModel.addColumn("TopicName");
+        tableModel.addColumn("Difficulty");
 
         topicsTable = new JTable(tableModel);
         topicsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -37,7 +37,7 @@ public class TopicsPanel extends JPanel {
         add(scrollPane, BorderLayout.CENTER);
 
         JPanel buttonPanel = new JPanel();
-        JButton addButton = new JButton("Yeni Konu Ekle");
+        JButton addButton = new JButton("Create New Topic");
 
         addButton.addActionListener(e -> {
             TopicForm topicForm = new TopicForm(topic -> {
@@ -47,11 +47,11 @@ public class TopicsPanel extends JPanel {
             topicForm.setVisible(true);
         });
 
-        editButton = new JButton("Düzenle");
+        editButton = new JButton("Update");
         editButton.addActionListener(e -> editSelectedTopic());
         editButton.setEnabled(false);
 
-        deleteButton = new JButton("Sil");
+        deleteButton = new JButton("Delete");
         deleteButton.addActionListener(e -> deleteSelectedTopic());
         deleteButton.setEnabled(false);
 
@@ -106,7 +106,7 @@ public class TopicsPanel extends JPanel {
         int selectedRow = topicsTable.getSelectedRow();
         if (selectedRow != -1) {
             int response = JOptionPane.showConfirmDialog(this, "Bu konuyu silmek istediğinizden emin misiniz?",
-                    "Konu Sil", JOptionPane.YES_NO_OPTION);
+                    "Delete the Topic", JOptionPane.YES_NO_OPTION);
             if (response == JOptionPane.YES_OPTION) {
                 int topicID = (int) topicsTable.getValueAt(selectedRow, 0);
                 topicController.deleteTopic(topicID);

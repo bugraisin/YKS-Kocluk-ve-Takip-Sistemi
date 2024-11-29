@@ -13,28 +13,28 @@ public class TaskForm extends JDialog {
     }
 
     public TaskForm(TaskFormListener listener) {
-        setTitle("Yeni Görev Ekle");
+        setTitle("Create New Task");
         setSize(400, 300);
         setLayout(new GridLayout(5, 2));
         setModal(true);
 
-        add(new JLabel("Öğrenci ID:"));
+        add(new JLabel("StudentID:"));
         JTextField studentIDField = new JTextField();
         add(studentIDField);
 
-        add(new JLabel("Danışman ID:"));
+        add(new JLabel("AdvisorID:"));
         JTextField advisorIDField = new JTextField();
         add(advisorIDField);
 
-        add(new JLabel("Görev Metni:"));
+        add(new JLabel("Text:"));
         JTextField taskTextField = new JTextField();
         add(taskTextField);
 
-        add(new JLabel("Son Tarih (YYYY-MM-DD):"));
+        add(new JLabel("DueDate(YYYY-MM-DD):"));
         JTextField dueDateField = new JTextField();
         add(dueDateField);
 
-        JButton saveButton = new JButton("Kaydet");
+        JButton saveButton = new JButton("Save");
         saveButton.addActionListener(e -> {
             try {
                 Task task = new Task();
@@ -49,7 +49,7 @@ public class TaskForm extends JDialog {
                 listener.onTaskSubmitted(task);
                 dispose();
             } catch (NumberFormatException | ParseException ex) {
-                JOptionPane.showMessageDialog(this, "Lütfen tüm alanları doğru girin!", "Hata", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Please Fill the Boxes Correctly!", "Error", JOptionPane.ERROR_MESSAGE);
             }
         });
         add(saveButton);
@@ -57,7 +57,7 @@ public class TaskForm extends JDialog {
 
     public TaskForm(Task task, TaskFormListener listener) {
         this(listener);
-        setTitle("Görevi Düzenle");
+        setTitle("Update the Task");
 
         ((JTextField) getContentPane().getComponent(1)).setText(String.valueOf(task.getStudentID()));
         ((JTextField) getContentPane().getComponent(3)).setText(String.valueOf(task.getAdvisorID()));

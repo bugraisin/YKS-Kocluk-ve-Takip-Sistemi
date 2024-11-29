@@ -19,17 +19,17 @@ public class SchedulesPanel extends JPanel {
         scheduleController = new ScheduleController();
         setLayout(new BorderLayout());
 
-        JLabel title = new JLabel("Programlar", SwingConstants.CENTER);
+        JLabel title = new JLabel("Schedules", SwingConstants.CENTER);
         title.setFont(new Font("Arial", Font.BOLD, 24));
         add(title, BorderLayout.NORTH);
 
         DefaultTableModel tableModel = new DefaultTableModel();
-        tableModel.addColumn("Schedule ID");
-        tableModel.addColumn("Öğrenci ID");
-        tableModel.addColumn("Başlangıç Tarihi");
-        tableModel.addColumn("Bitiş Tarihi");
-        tableModel.addColumn("Açıklama");
-        tableModel.addColumn("Başlık");
+        tableModel.addColumn("ScheduleID");
+        tableModel.addColumn("StudentID");
+        tableModel.addColumn("StartDate");
+        tableModel.addColumn("EndDate");
+        tableModel.addColumn("Description");
+        tableModel.addColumn("Title");
 
         schedulesTable = new JTable(tableModel);
         schedulesTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -39,7 +39,7 @@ public class SchedulesPanel extends JPanel {
         add(scrollPane, BorderLayout.CENTER);
 
         JPanel buttonPanel = new JPanel();
-        JButton addButton = new JButton("Yeni Program Ekle");
+        JButton addButton = new JButton("Create New Schedule");
 
         addButton.addActionListener(e -> {
             ScheduleForm scheduleForm = new ScheduleForm(schedule -> {
@@ -49,11 +49,11 @@ public class SchedulesPanel extends JPanel {
             scheduleForm.setVisible(true);
         });
 
-        editButton = new JButton("Düzenle");
+        editButton = new JButton("Update");
         editButton.addActionListener(e -> editSelectedSchedule());
         editButton.setEnabled(false);
 
-        deleteButton = new JButton("Sil");
+        deleteButton = new JButton("Delete");
         deleteButton.addActionListener(e -> deleteSelectedSchedule());
         deleteButton.setEnabled(false);
 

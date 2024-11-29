@@ -19,15 +19,15 @@ public class ResourcesPanel extends JPanel {
         resourceController = new ResourceController();
         setLayout(new BorderLayout());
 
-        JLabel title = new JLabel("Kaynaklar", SwingConstants.CENTER);
+        JLabel title = new JLabel("Resources", SwingConstants.CENTER);
         title.setFont(new Font("Arial", Font.BOLD, 24));
         add(title, BorderLayout.NORTH);
 
         DefaultTableModel tableModel = new DefaultTableModel();
-        tableModel.addColumn("Resource ID");
-        tableModel.addColumn("Konu ID");
-        tableModel.addColumn("Tür");
-        tableModel.addColumn("Başlık");
+        tableModel.addColumn("ResourceID");
+        tableModel.addColumn("TopicID");
+        tableModel.addColumn("Type");
+        tableModel.addColumn("Title");
         tableModel.addColumn("URL");
 
         resourcesTable = new JTable(tableModel);
@@ -38,7 +38,7 @@ public class ResourcesPanel extends JPanel {
         add(scrollPane, BorderLayout.CENTER);
 
         JPanel buttonPanel = new JPanel();
-        JButton addButton = new JButton("Yeni Kaynak Ekle");
+        JButton addButton = new JButton("Create New Resource");
 
         addButton.addActionListener(e -> {
             ResourceForm resourceForm = new ResourceForm(resource -> {
@@ -48,11 +48,11 @@ public class ResourcesPanel extends JPanel {
             resourceForm.setVisible(true);
         });
 
-        editButton = new JButton("Düzenle");
+        editButton = new JButton("Update");
         editButton.addActionListener(e -> editSelectedResource());
         editButton.setEnabled(false);
 
-        deleteButton = new JButton("Sil");
+        deleteButton = new JButton("Delete");
         deleteButton.addActionListener(e -> deleteSelectedResource());
         deleteButton.setEnabled(false);
 

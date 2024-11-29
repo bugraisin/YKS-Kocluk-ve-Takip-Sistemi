@@ -10,20 +10,20 @@ public class ResourceForm extends JDialog {
     }
 
     public ResourceForm(ResourceFormListener listener) {
-        setTitle("Yeni Kaynak Ekle");
+        setTitle("Create New Resource");
         setSize(400, 300);
         setLayout(new GridLayout(5, 2));
         setModal(true);
 
-        add(new JLabel("Konu ID:"));
+        add(new JLabel("TopicID:"));
         JTextField topicIDField = new JTextField();
         add(topicIDField);
 
-        add(new JLabel("Kaynak Türü:"));
+        add(new JLabel("Type"));
         JTextField typeField = new JTextField();
         add(typeField);
 
-        add(new JLabel("Başlık:"));
+        add(new JLabel("Title:"));
         JTextField titleField = new JTextField();
         add(titleField);
 
@@ -31,7 +31,7 @@ public class ResourceForm extends JDialog {
         JTextField urlField = new JTextField();
         add(urlField);
 
-        JButton saveButton = new JButton("Kaydet");
+        JButton saveButton = new JButton("Save");
         saveButton.addActionListener(e -> {
             try {
                 Resource resource = new Resource();
@@ -43,7 +43,7 @@ public class ResourceForm extends JDialog {
                 listener.onResourceSubmitted(resource);
                 dispose();
             } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(this, "Lütfen tüm alanları doğru girin!", "Hata", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Please Fill the Boxes Correctly!", "Error", JOptionPane.ERROR_MESSAGE);
             }
         });
         add(saveButton);
@@ -51,7 +51,7 @@ public class ResourceForm extends JDialog {
 
     public ResourceForm(Resource resource, ResourceFormListener listener) {
         this(listener);
-        setTitle("Kaynağı Düzenle");
+        setTitle("Update the Resource");
 
         ((JTextField) getContentPane().getComponent(1)).setText(String.valueOf(resource.getTopicID()));
         ((JTextField) getContentPane().getComponent(3)).setText(resource.getType());

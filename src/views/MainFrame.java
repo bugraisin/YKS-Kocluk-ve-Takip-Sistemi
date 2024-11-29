@@ -13,16 +13,16 @@ public class MainFrame extends JFrame {
         setLayout(new BorderLayout());
 
         JMenuBar menuBar = new JMenuBar();
-        JMenu menu = new JMenu("Menü");
-        JMenuItem studentsMenuItem = new JMenuItem("Öğrenciler");
-        JMenuItem tasksMenuItem = new JMenuItem("Görevler");
-        JMenuItem examsMenuItem = new JMenuItem("Sınavlar");
-        JMenuItem sectionBasedResultMenuItem = new JMenuItem("Sınav Detayları");
-        JMenuItem advisorsMenuItem = new JMenuItem("Danışmanlar");
-        JMenuItem coursesMenuItem = new JMenuItem("Dersler");
-        JMenuItem topicsMenuItem = new JMenuItem("Konular");
-        JMenuItem schedulesMenuItem = new JMenuItem("Programlar");
-        JMenuItem resourcesMenuItem = new JMenuItem("Kaynaklar");
+        JMenu menu = new JMenu("Menu");
+        JMenuItem studentsMenuItem = new JMenuItem("Students");
+        JMenuItem tasksMenuItem = new JMenuItem("Tasks");
+        JMenuItem examsMenuItem = new JMenuItem("Exams");
+        JMenuItem sectionBasedResultMenuItem = new JMenuItem("SectionBasedResults");
+        JMenuItem advisorsMenuItem = new JMenuItem("Advisors");
+        JMenuItem coursesMenuItem = new JMenuItem("Courses");
+        JMenuItem topicsMenuItem = new JMenuItem("Topics");
+        JMenuItem schedulesMenuItem = new JMenuItem("Schedules");
+        JMenuItem resourcesMenuItem = new JMenuItem("Resources");
 
         studentsMenuItem.addActionListener(e -> showStudentsPanel());
         tasksMenuItem.addActionListener(e -> showTasksPanel());

@@ -13,32 +13,32 @@ public class ScheduleForm extends JDialog {
     }
 
     public ScheduleForm(ScheduleFormListener listener) {
-        setTitle("Yeni Program Ekle");
+        setTitle("Create New Schedule");
         setSize(400, 400);
         setLayout(new GridLayout(6, 2));
         setModal(true);
 
-        add(new JLabel("Öğrenci ID:"));
+        add(new JLabel("StudentID:"));
         JTextField studentIDField = new JTextField();
         add(studentIDField);
 
-        add(new JLabel("Başlangıç Tarihi (YYYY-MM-DD):"));
+        add(new JLabel("StartDate(YYYY-MM-DD):"));
         JTextField startDateField = new JTextField();
         add(startDateField);
 
-        add(new JLabel("Bitiş Tarihi (YYYY-MM-DD):"));
+        add(new JLabel("EndDate(YYYY-MM-DD):"));
         JTextField endDateField = new JTextField();
         add(endDateField);
 
-        add(new JLabel("Açıklama:"));
+        add(new JLabel("Description:"));
         JTextField descriptionField = new JTextField();
         add(descriptionField);
 
-        add(new JLabel("Başlık:"));
+        add(new JLabel("Title:"));
         JTextField titleField = new JTextField();
         add(titleField);
 
-        JButton saveButton = new JButton("Kaydet");
+        JButton saveButton = new JButton("Save");
         saveButton.addActionListener(e -> {
             try {
                 Schedule schedule = new Schedule();
@@ -56,7 +56,7 @@ public class ScheduleForm extends JDialog {
                 listener.onScheduleSubmitted(schedule);
                 dispose();
             } catch (NumberFormatException | ParseException ex) {
-                JOptionPane.showMessageDialog(this, "Lütfen tüm alanları doğru girin!", "Hata", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Please Fill the Boxes Correctly!", "Error", JOptionPane.ERROR_MESSAGE);
             }
         });
         add(saveButton);
@@ -64,7 +64,7 @@ public class ScheduleForm extends JDialog {
 
     public ScheduleForm(Schedule schedule, ScheduleFormListener listener) {
         this(listener);
-        setTitle("Programı Düzenle");
+        setTitle("Update the Schedule");
 
         ((JTextField) getContentPane().getComponent(1)).setText(String.valueOf(schedule.getStudentID()));
         ((JTextField) getContentPane().getComponent(3)).setText(schedule.getStartDate().toString());

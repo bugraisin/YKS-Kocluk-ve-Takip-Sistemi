@@ -19,16 +19,16 @@ public class TasksPanel extends JPanel {
         taskController = new TaskController();
         setLayout(new BorderLayout());
 
-        JLabel title = new JLabel("Görevler", SwingConstants.CENTER);
+        JLabel title = new JLabel("Tasks", SwingConstants.CENTER);
         title.setFont(new Font("Arial", Font.BOLD, 24));
         add(title, BorderLayout.NORTH);
 
         DefaultTableModel tableModel = new DefaultTableModel();
-        tableModel.addColumn("ID");
-        tableModel.addColumn("Öğrenci ID");
-        tableModel.addColumn("Danışman ID");
-        tableModel.addColumn("Görev Metni");
-        tableModel.addColumn("Son Tarih");
+        tableModel.addColumn("TaskID");
+        tableModel.addColumn("StudentID");
+        tableModel.addColumn("AdvisorID");
+        tableModel.addColumn("Text");
+        tableModel.addColumn("DueDate");
 
         tasksTable = new JTable(tableModel);
         tasksTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -38,7 +38,7 @@ public class TasksPanel extends JPanel {
         add(scrollPane, BorderLayout.CENTER);
 
         JPanel buttonPanel = new JPanel();
-        JButton addButton = new JButton("Yeni Görev Ekle");
+        JButton addButton = new JButton("Create New Task");
 
         addButton.addActionListener(e -> {
             TaskForm taskForm = new TaskForm(task -> {
@@ -48,11 +48,11 @@ public class TasksPanel extends JPanel {
             taskForm.setVisible(true);
         });
 
-        editButton = new JButton("Düzenle");
+        editButton = new JButton("Update");
         editButton.addActionListener(e -> editSelectedTask());
         editButton.setEnabled(false);
 
-        deleteButton = new JButton("Sil");
+        deleteButton = new JButton("Delete");
         deleteButton.addActionListener(e -> deleteSelectedTask());
         deleteButton.setEnabled(false);
 
@@ -109,7 +109,7 @@ public class TasksPanel extends JPanel {
         int selectedRow = tasksTable.getSelectedRow();
         if (selectedRow != -1) {
             int response = JOptionPane.showConfirmDialog(this, "Bu görevi silmek istediğinizden emin misiniz?",
-                    "Görev Sil", JOptionPane.YES_NO_OPTION);
+                    "Delete the Task", JOptionPane.YES_NO_OPTION);
             if (response == JOptionPane.YES_OPTION) {
                 int taskID = (int) tasksTable.getValueAt(selectedRow, 0);
                 taskController.deleteTask(taskID);

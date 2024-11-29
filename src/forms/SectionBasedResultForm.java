@@ -10,32 +10,32 @@ public class SectionBasedResultForm extends JDialog {
     }
 
     public SectionBasedResultForm(SectionBasedResultFormListener listener) {
-        setTitle("Yeni Bölüm Bazlı Sonuç Ekle");
+        setTitle("Create New SectionBasedResult");
         setSize(400, 400);
         setLayout(new GridLayout(6, 2));
         setModal(true);
 
-        add(new JLabel("Sınav ID:"));
+        add(new JLabel("ExamID:"));
         JTextField examIDField = new JTextField();
         add(examIDField);
 
-        add(new JLabel("Bölüm Adı:"));
+        add(new JLabel("SectionName:"));
         JTextField sectionNameField = new JTextField();
         add(sectionNameField);
 
-        add(new JLabel("Doğru Sayısı:"));
+        add(new JLabel("TrueNum:"));
         JTextField trueNumField = new JTextField();
         add(trueNumField);
 
-        add(new JLabel("Yanlış Sayısı:"));
+        add(new JLabel("FalseNum:"));
         JTextField falseNumField = new JTextField();
         add(falseNumField);
 
-        add(new JLabel("Net Puan:"));
+        add(new JLabel("Net:"));
         JTextField netField = new JTextField();
         add(netField);
 
-        JButton saveButton = new JButton("Kaydet");
+        JButton saveButton = new JButton("Save");
         saveButton.addActionListener(e -> {
             try {
                 SectionBasedResult result = new SectionBasedResult();
@@ -48,7 +48,7 @@ public class SectionBasedResultForm extends JDialog {
                 listener.onSectionBasedResultSubmitted(result);
                 dispose();
             } catch (Exception ex) {
-                JOptionPane.showMessageDialog(this, "Lütfen tüm alanları doğru girin!", "Hata", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Please Fill the Boxes Correctly!", "Error", JOptionPane.ERROR_MESSAGE);
             }
         });
         add(saveButton);
@@ -56,7 +56,7 @@ public class SectionBasedResultForm extends JDialog {
 
     public SectionBasedResultForm(SectionBasedResult result, SectionBasedResultFormListener listener) {
         this(listener);
-        setTitle("Bölüm Bazlı Sonucu Düzenle");
+        setTitle("Update the CourseBaseResult");
 
         ((JTextField) getContentPane().getComponent(1)).setText(String.valueOf(result.getExamID()));
         ((JTextField) getContentPane().getComponent(3)).setText(result.getSectionName());

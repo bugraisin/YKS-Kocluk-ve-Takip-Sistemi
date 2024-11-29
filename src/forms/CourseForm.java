@@ -10,24 +10,24 @@ public class CourseForm extends JDialog {
     }
 
     public CourseForm(CourseFormListener listener) {
-        setTitle("Yeni Kurs Ekle");
+        setTitle("Create New Course");
         setSize(400, 300);
         setLayout(new GridLayout(4, 2));
         setModal(true);
 
-        add(new JLabel("Öğrenci ID:"));
+        add(new JLabel("StudentID:"));
         JTextField studentIDField = new JTextField();
         add(studentIDField);
 
-        add(new JLabel("Kurs Adı:"));
+        add(new JLabel("CourseName:"));
         JTextField courseNameField = new JTextField();
         add(courseNameField);
 
-        add(new JLabel("Kategori:"));
+        add(new JLabel("Category:"));
         JTextField categoryField = new JTextField();
         add(categoryField);
 
-        JButton saveButton = new JButton("Kaydet");
+        JButton saveButton = new JButton("Save");
         saveButton.addActionListener(e -> {
             try {
                 Course course = new Course();
@@ -38,7 +38,7 @@ public class CourseForm extends JDialog {
                 listener.onCourseSubmitted(course);
                 dispose();
             } catch (Exception ex) {
-                JOptionPane.showMessageDialog(this, "Lütfen tüm alanları doğru girin!", "Hata", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Please Fill the Boxes Correctly!", "Error", JOptionPane.ERROR_MESSAGE);
             }
         });
         add(saveButton);
@@ -46,7 +46,7 @@ public class CourseForm extends JDialog {
 
     public CourseForm(Course course, CourseFormListener listener) {
         this(listener);
-        setTitle("Kursu Düzenle");
+        setTitle("Update the Course");
 
         ((JTextField) getContentPane().getComponent(1)).setText(String.valueOf(course.getStudentID()));
         ((JTextField) getContentPane().getComponent(3)).setText(course.getCourseName());

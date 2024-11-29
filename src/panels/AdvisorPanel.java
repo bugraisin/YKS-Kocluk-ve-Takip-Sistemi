@@ -19,7 +19,7 @@ public class AdvisorPanel extends JPanel {
         advisorController = new AdvisorController();
         setLayout(new BorderLayout());
 
-        JLabel title = new JLabel("Danışmanlar", SwingConstants.CENTER);
+        JLabel title = new JLabel("Advisors", SwingConstants.CENTER);
         title.setFont(new Font("Arial", Font.BOLD, 24));
         add(title, BorderLayout.NORTH);
 
@@ -27,12 +27,12 @@ public class AdvisorPanel extends JPanel {
         DefaultTableModel tableModel = new DefaultTableModel();
         tableModel.addColumn("AdvisorID");
         tableModel.addColumn("StudentID");
-        tableModel.addColumn("Ad");
-        tableModel.addColumn("Ortanca İsim");
-        tableModel.addColumn("Soyad");
+        tableModel.addColumn("FirstName");
+        tableModel.addColumn("MidName");
+        tableModel.addColumn("LastName");
         tableModel.addColumn("Email");
-        tableModel.addColumn("Telefon");
-        tableModel.addColumn("Uzmanlık");
+        tableModel.addColumn("PhoneNo");
+        tableModel.addColumn("Major");
 
         advisorsTable = new JTable(tableModel);
         advisorsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -42,7 +42,7 @@ public class AdvisorPanel extends JPanel {
         add(scrollPane, BorderLayout.CENTER);
 
         JPanel buttonPanel = new JPanel();
-        JButton addButton = new JButton("Yeni Danışman Ekle");
+        JButton addButton = new JButton("Create New Advisor");
 
         addButton.addActionListener(e -> {
             AdvisorForm advisorForm = new AdvisorForm(advisor -> {
@@ -52,11 +52,11 @@ public class AdvisorPanel extends JPanel {
             advisorForm.setVisible(true);
         });
 
-        editButton = new JButton("Düzenle");
+        editButton = new JButton("Update");
         editButton.addActionListener(e -> editSelectedAdvisor());
         editButton.setEnabled(false);
 
-        deleteButton = new JButton("Sil");
+        deleteButton = new JButton("Delete");
         deleteButton.addActionListener(e -> deleteSelectedAdvisor());
         deleteButton.setEnabled(false);
 

@@ -18,15 +18,15 @@ public class SectionBasedResultPanel extends JPanel {
         sectionBasedResultController = new SectionBasedResultController();
         setLayout(new BorderLayout());
 
-        JLabel title = new JLabel("Bölüm Bazlı Sonuçlar", SwingConstants.CENTER);
+        JLabel title = new JLabel("SectionBasedResults", SwingConstants.CENTER);
         title.setFont(new Font("Arial", Font.BOLD, 24));
         add(title, BorderLayout.NORTH);
 
         DefaultTableModel tableModel = new DefaultTableModel();
-        tableModel.addColumn("Sınav ID");
-        tableModel.addColumn("Bölüm Adı");
-        tableModel.addColumn("Doğru Sayısı");
-        tableModel.addColumn("Yanlış Sayısı");
+        tableModel.addColumn("ExamID");
+        tableModel.addColumn("SectionName");
+        tableModel.addColumn("TrueNum");
+        tableModel.addColumn("FalseNum");
         tableModel.addColumn("Net");
 
         resultsTable = new JTable(tableModel);
@@ -37,7 +37,7 @@ public class SectionBasedResultPanel extends JPanel {
         add(scrollPane, BorderLayout.CENTER);
 
         JPanel buttonPanel = new JPanel();
-        JButton addButton = new JButton("Yeni Sonuç Ekle");
+        JButton addButton = new JButton("Create New Result");
 
         addButton.addActionListener(e -> {
             SectionBasedResultForm resultForm = new SectionBasedResultForm(result -> {
@@ -47,11 +47,11 @@ public class SectionBasedResultPanel extends JPanel {
             resultForm.setVisible(true);
         });
 
-        editButton = new JButton("Düzenle");
+        editButton = new JButton("Update");
         editButton.addActionListener(e -> editSelectedResult());
         editButton.setEnabled(false);
 
-        deleteButton = new JButton("Sil");
+        deleteButton = new JButton("Delete");
         deleteButton.addActionListener(e -> deleteSelectedResult());
         deleteButton.setEnabled(false);
 
@@ -85,23 +85,35 @@ public class SectionBasedResultPanel extends JPanel {
     }
 
     private void editSelectedResult() {
-//        int selectedRow = resultsTable.getSelectedRow();
-//        if (selectedRow != -1) {
-//            int examID = (int) resultsTable.getValueAt(selectedRow, 0);
-//            String sectionName = (String) resultsTable.getValueAt(selectedRow, 1);
-//            SectionBasedResult result = sectionBasedResultController.getSectionBasedResultById(examID, sectionName);
-//
-//            SectionBasedResultForm resultForm = new SectionBasedResultForm(resultToEdit -> {
-//                result.setTrueNum(resultToEdit.getTrueNum());
-//                result.setFalseNum(resultToEdit.getFalseNum());
-//                result.setNet(resultToEdit.getNet());
-//
-//                sectionBasedResultController.updateSectionBasedResult(result);
-//                updateResultsTable();
-//            });
-//
-//            resultForm.setVisible(true);
-//        }
+        int selectedRow = resultsTable.getSelectedRow();
+        if (selectedRow != -1) {
+            // Tablodan seçili satırdaki değerleri alın
+            int examID = (int) resultsTable.getValueAt(selectedRow, 0);
+            String sectionName = (String) resultsTable.getValueAt(selectedRow, 1);
+            int trueNum = (int) resultsTable.getValueAt(selectedRow, 2);
+            int falseNum = (int) resultsTable.getValueAt(selectedRow, 3);
+            float net = (float) resultsTable.getValueAt(selectedRow, 4);
+
+            // Formu açmadan önce yeni bir SectionBasedResult nesnesi oluşturun
+            SectionBasedResult result = new SectionBasedResult();
+            result.setExamID(examID);
+            result.setSectionName(sectionName);
+            result.setTrueNum(trueNum);
+            result.setFalseNum(falseNum);
+            result.setNet(net);
+
+            // Formu aç ve yeni değerleri kaydetmek için güncelleme işlemini gerçekleştir
+            SectionBasedResultForm resultForm = new SectionBasedResultForm(resultToEdit -> {
+                result.setTrueNum(resultToEdit.getTrueNum());
+                result.setFalseNum(resultToEdit.getFalseNum());
+                result.setNet(resultToEdit.getNet());
+
+                sectionBasedResultController.updateSectionBasedResult(result);
+                updateResultsTable();
+            });
+
+            resultForm.setVisible(true);
+        }
     }
 
     private void deleteSelectedResult() {
