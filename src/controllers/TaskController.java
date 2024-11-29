@@ -1,5 +1,6 @@
 package controllers;
 
+import models.Exam;
 import models.Task;
 import utils.DatabaseManager;
 
@@ -109,5 +110,29 @@ public class TaskController {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public List<Task> getTasksByStudentId(int studentID) {
+        List<Task> tasks = new ArrayList<>();
+        try (Connection conn = DatabaseManager.getConnection()) {
+            String sql = "SELECT * FROM Task WHERE StudentID = ?";
+            try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+                stmt.setInt(1, studentID);
+                try (ResultSet rs = stmt.executeQuery()) {
+                    while (rs.next()) {
+                        Task task = new Task();
+                        task.setTaskID(rs.getInt("TaskID"));
+                        task.setStudentID(rs.getInt("StudentID"));
+                        task.setAdvisorID(rs.getInt("AdvisorID"));
+                        task.setText(rs.getString("Text"));
+                        task.setDueDate(rs.getDate("DueDate"));
+                        tasks.add(task);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return tasks;
     }
 }

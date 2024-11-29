@@ -4,35 +4,43 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
+import controllers.*;
 import forms.StudentForm;
-import forms.AdvisorForm;
 import models.*;
-import controllers.StudentController;
-import controllers.ExamController;
-import controllers.CourseController;
-import controllers.ScheduleController;
 
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 public class StudentsPanel extends JPanel {
-    private JTable studentsTable;
-    private StudentController studentController;
-    private ExamController examController;
-    private CourseController courseController;
-    private ScheduleController scheduleController;
-    private JButton editButton;
-    private JButton deleteButton;
-    private JButton addAdvisorButton;
-    private JButton viewExamsButton;
-    private JButton viewCoursesButton;
-    private JButton viewAdvisorsButton;
-    private JButton viewSchedulesButton;
+    private final JTable studentsTable;
+    private final StudentController studentController;
+    private final ExamController examController;
+    private final CourseController courseController;
+    private final ScheduleController scheduleController;
+    private final TaskController taskController;
+    private final JButton editButton;
+    private final JButton deleteButton;
+    private final JButton viewExamsButton;
+    private final JButton viewCoursesButton;
+    private final JButton viewAdvisorsButton;
+    private final JButton viewSchedulesButton;
+    private final JButton viewTasksButton;
+    private final JTextField searchFirstNameField = new JTextField(10);
+    private final JTextField searchMidNameField = new JTextField(10);
+    private final JTextField searchLastNameField = new JTextField(10);
+    private final JTextField searchEmailField = new JTextField(10);
+    private final JTextField searchPhoneField = new JTextField(10);
+    private final JTextField searchClassNoField = new JTextField(10);
+    private final JTextField searchGoalUniField = new JTextField(10);
+    private final JTextField searchGoalMajorField = new JTextField(10);
+    private final JButton searchButton = new JButton("Ara");
 
     public StudentsPanel() {
         studentController = new StudentController();
         examController = new ExamController();
         courseController = new CourseController();
         scheduleController = new ScheduleController();
+        taskController = new TaskController();
         setLayout(new BorderLayout());
 
         // Başlık
@@ -42,7 +50,7 @@ public class StudentsPanel extends JPanel {
 
         // JTable için model
         DefaultTableModel tableModel = new DefaultTableModel();
-        tableModel.addColumn("SectionBasedResult ID");
+        tableModel.addColumn("Student ID");
         tableModel.addColumn("Ad");
         tableModel.addColumn("Ortanca İsim");
         tableModel.addColumn("Soyad");
@@ -97,6 +105,10 @@ public class StudentsPanel extends JPanel {
         viewSchedulesButton.addActionListener(e -> viewSchedulesOfSelectedStudent());
         viewSchedulesButton.setEnabled(false);
 
+        viewTasksButton = new JButton("Görevleri Görüntüle");
+        viewTasksButton.addActionListener(e -> viewTasksOfSelectedStudent());
+        viewTasksButton.setEnabled(false);
+
         // Seçili satır değiştiğinde butonların durumunu güncelleme
         studentsTable.getSelectionModel().addListSelectionListener(event -> {
             boolean isRowSelected = studentsTable.getSelectedRow() != -1;
@@ -106,9 +118,39 @@ public class StudentsPanel extends JPanel {
             viewCoursesButton.setEnabled(isRowSelected);
             viewAdvisorsButton.setEnabled(isRowSelected);
             viewSchedulesButton.setEnabled(isRowSelected);
+            viewTasksButton.setEnabled(isRowSelected);
         });
 
+        // Arama Paneli
+        JPanel searchPanel = new JPanel(new GridLayout(4, 4, 5, 5));
+        searchPanel.setBorder(BorderFactory.createTitledBorder("Öğrenci Ara"));
+
+        searchPanel.add(new JLabel("Ad:"));
+        searchPanel.add(searchFirstNameField);
+        searchPanel.add(new JLabel("Ortanca İsim:"));
+        searchPanel.add(searchMidNameField);
+        searchPanel.add(new JLabel("Soyad:"));
+        searchPanel.add(searchLastNameField);
+
+        searchPanel.add(new JLabel("Email:"));
+        searchPanel.add(searchEmailField);
+        searchPanel.add(new JLabel("Telefon:"));
+        searchPanel.add(searchPhoneField);
+        searchPanel.add(new JLabel("Sınıf:"));
+        searchPanel.add(searchClassNoField);
+
+        searchPanel.add(new JLabel("Hedef Üniversite:"));
+        searchPanel.add(searchGoalUniField);
+        searchPanel.add(new JLabel("Hedef Bölüm:"));
+        searchPanel.add(searchGoalMajorField);
+
+// Arama butonuna tıklama işlemi
+        searchButton.addActionListener(e -> searchStudents());
+        add(searchPanel, BorderLayout.NORTH);
+
+
         // Butonları panelde düzenle
+        buttonPanel.add(searchButton);
         buttonPanel.add(addButton);
         buttonPanel.add(editButton);
         buttonPanel.add(deleteButton);
@@ -116,6 +158,7 @@ public class StudentsPanel extends JPanel {
         buttonPanel.add(viewCoursesButton);
         buttonPanel.add(viewAdvisorsButton);
         buttonPanel.add(viewSchedulesButton);
+        buttonPanel.add(viewTasksButton);
         add(buttonPanel, BorderLayout.SOUTH);
     }
 
@@ -139,7 +182,12 @@ public class StudentsPanel extends JPanel {
 
             tableModel.addRow(row);  // Satırı ekle
         }
+
+        // Sıralama desteği ekle
+        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(tableModel);
+        studentsTable.setRowSorter(sorter);
     }
+
 
     // Seçili öğrenciyi düzenleme işlemi
     private void editSelectedStudent() {
@@ -165,6 +213,43 @@ public class StudentsPanel extends JPanel {
             studentForm.setVisible(true);
         }
     }
+
+    // Öğrenci arama işlemi
+    private void searchStudents() {
+        String firstName = searchFirstNameField.getText().trim();
+        String midName = searchMidNameField.getText().trim();
+        String lastName = searchLastNameField.getText().trim();
+        String email = searchEmailField.getText().trim();
+        String phone = searchPhoneField.getText().trim();
+        String classNo = searchClassNoField.getText().trim();
+        String goalUni = searchGoalUniField.getText().trim();
+        String goalMajor = searchGoalMajorField.getText().trim();
+
+        // Filtrelenmiş öğrencileri getir
+        List<Student> filteredStudents = studentController.searchStudents(
+                firstName, midName, lastName, email, phone, classNo, goalUni, goalMajor
+        );
+
+        // Tabloyu güncelle
+        DefaultTableModel tableModel = (DefaultTableModel) studentsTable.getModel();
+        tableModel.setRowCount(0); // Tablodaki mevcut satırları temizle
+
+        for (Student student : filteredStudents) {
+            Object[] row = new Object[9];
+            row[0] = student.getStudentID();
+            row[1] = student.getFirstName();
+            row[2] = student.getMidName();
+            row[3] = student.getLastName();
+            row[4] = student.getEmail();
+            row[5] = student.getPhoneNo();
+            row[6] = student.getClassNo();
+            row[7] = student.getGoalUni();
+            row[8] = student.getGoalMajor();
+            tableModel.addRow(row);
+        }
+    }
+
+
 
     // Seçili öğrenciyi silme işlemi
     private void deleteSelectedStudent() {
@@ -301,6 +386,40 @@ public class StudentsPanel extends JPanel {
                         schedule.getStartDate(),
                         schedule.getEndDate(),
                         schedule.getDescription()
+                };
+                tableModel.addRow(row);
+            }
+
+            JTable schedulesTable = new JTable(tableModel);
+            JScrollPane scrollPane = new JScrollPane(schedulesTable);
+            JDialog dialog = new JDialog();
+            dialog.setTitle("Programlar");
+            dialog.setSize(600, 400);
+            dialog.add(scrollPane);
+            dialog.setVisible(true);
+        }
+    }
+
+    private void viewTasksOfSelectedStudent() {
+        int selectedRow = studentsTable.getSelectedRow();
+        if (selectedRow != -1) {
+            int studentID = (int) studentsTable.getValueAt(selectedRow, 0);
+            List<Task> tasks = taskController.getTasksByStudentId(studentID);
+
+            DefaultTableModel tableModel = new DefaultTableModel();
+            tableModel.addColumn("Task ID");
+            tableModel.addColumn("Student ID");
+            tableModel.addColumn("Advisor ID");
+            tableModel.addColumn("Text");
+            tableModel.addColumn("DueDate");
+
+            for (Task task : tasks) {
+                Object[] row = {
+                        task.getTaskID(),
+                        task.getStudentID(),
+                        task.getAdvisorID(),
+                        task.getText(),
+                        task.getDueDate()
                 };
                 tableModel.addRow(row);
             }

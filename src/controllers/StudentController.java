@@ -4,6 +4,7 @@ import models.Advisor;
 import models.Student;
 import utils.DatabaseManager;
 
+import javax.swing.*;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -67,10 +68,25 @@ public class StudentController {
             String sql = "DELETE FROM Student WHERE StudentID = ?";
             try (PreparedStatement stmt = conn.prepareStatement(sql)) {
                 stmt.setInt(1, studentID);
-                stmt.executeUpdate();
+
+                int rowsDeleted = stmt.executeUpdate();
+                if (rowsDeleted == 0) {
+                    JOptionPane.showMessageDialog(null,
+                            "Hata: Silinmek istenen öğrenci bulunamadı. Lütfen öğrenci ID'sini kontrol ediniz.",
+                            "Silme Hatası",
+                            JOptionPane.WARNING_MESSAGE);
+                }
             }
+        } catch (SQLIntegrityConstraintViolationException e) {
+            JOptionPane.showMessageDialog(null,
+                    "Hata: Bu öğrenci, başka bir kayıtla ilişkili olduğu için silinemiyor. İlgili kayıtları kontrol edin.",
+                    "Silme Hatası",
+                    JOptionPane.ERROR_MESSAGE);
         } catch (SQLException e) {
-            e.printStackTrace();
+            JOptionPane.showMessageDialog(null,
+                    "Hata: Öğrenci silinirken bir sorun oluştu. Lütfen tekrar deneyiniz.\nDetay: " + e.getMessage(),
+                    "Veritabanı Hatası",
+                    JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -204,6 +220,88 @@ public class StudentController {
         }
         return advisors;
     }
+
+    public List<Student> searchStudents(String firstName, String midName, String lastName, String email,
+                                        String phone, String classNo, String goalUni, String goalMajor) {
+        List<Student> students = new ArrayList<>();
+        StringBuilder sqlBuilder = new StringBuilder("SELECT * FROM Student WHERE 1=1");
+
+        if (!firstName.isEmpty()) {
+            sqlBuilder.append(" AND FirstName LIKE ?");
+        }
+        if (!midName.isEmpty()) {
+            sqlBuilder.append(" AND MidName LIKE ?");
+        }
+        if (!lastName.isEmpty()) {
+            sqlBuilder.append(" AND LastName LIKE ?");
+        }
+        if (!email.isEmpty()) {
+            sqlBuilder.append(" AND Email LIKE ?");
+        }
+        if (!phone.isEmpty()) {
+            sqlBuilder.append(" AND PhoneNo LIKE ?");
+        }
+        if (!classNo.isEmpty()) {
+            sqlBuilder.append(" AND ClassNo = ?");
+        }
+        if (!goalUni.isEmpty()) {
+            sqlBuilder.append(" AND GoalUni LIKE ?");
+        }
+        if (!goalMajor.isEmpty()) {
+            sqlBuilder.append(" AND GoalMajor LIKE ?");
+        }
+
+        try (Connection conn = DatabaseManager.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sqlBuilder.toString())) {
+
+            int paramIndex = 1;
+            if (!firstName.isEmpty()) {
+                stmt.setString(paramIndex++, "%" + firstName + "%");
+            }
+            if (!midName.isEmpty()) {
+                stmt.setString(paramIndex++, "%" + midName + "%");
+            }
+            if (!lastName.isEmpty()) {
+                stmt.setString(paramIndex++, "%" + lastName + "%");
+            }
+            if (!email.isEmpty()) {
+                stmt.setString(paramIndex++, "%" + email + "%");
+            }
+            if (!phone.isEmpty()) {
+                stmt.setString(paramIndex++, "%" + phone + "%");
+            }
+            if (!classNo.isEmpty()) {
+                stmt.setInt(paramIndex++, Integer.parseInt(classNo));
+            }
+            if (!goalUni.isEmpty()) {
+                stmt.setString(paramIndex++, "%" + goalUni + "%");
+            }
+            if (!goalMajor.isEmpty()) {
+                stmt.setString(paramIndex++, "%" + goalMajor + "%");
+            }
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Student student = new Student();
+                    student.setStudentID(rs.getInt("StudentID"));
+                    student.setFirstName(rs.getString("FirstName"));
+                    student.setMidName(rs.getString("MidName"));
+                    student.setLastName(rs.getString("LastName"));
+                    student.setEmail(rs.getString("Email"));
+                    student.setPhoneNo(rs.getString("PhoneNo"));
+                    student.setClassNo(rs.getInt("ClassNo"));
+                    student.setGoalUni(rs.getString("GoalUni"));
+                    student.setGoalMajor(rs.getString("GoalMajor"));
+                    students.add(student);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return students;
+    }
+
+
 
 
 
