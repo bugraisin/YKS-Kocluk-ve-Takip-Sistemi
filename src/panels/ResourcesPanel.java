@@ -8,6 +8,7 @@ import forms.ResourceForm;
 import models.Resource;
 import controllers.ResourceController;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 public class ResourcesPanel extends JPanel {
     private JTable resourcesTable;
@@ -83,6 +84,9 @@ public class ResourcesPanel extends JPanel {
 
             tableModel.addRow(row);
         }
+
+        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(tableModel);
+        resourcesTable.setRowSorter(sorter);
     }
 
     private void editSelectedResource() {

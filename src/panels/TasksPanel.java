@@ -8,6 +8,7 @@ import controllers.TaskController;
 import models.Task;
 import forms.TaskForm;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 public class TasksPanel extends JPanel {
     private JTable tasksTable;
@@ -83,6 +84,9 @@ public class TasksPanel extends JPanel {
 
             tableModel.addRow(row);
         }
+
+        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(tableModel);
+        tasksTable.setRowSorter(sorter);
     }
 
     private void editSelectedTask() {

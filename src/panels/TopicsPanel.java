@@ -8,6 +8,7 @@ import controllers.TopicController;
 import models.Topic;
 import forms.TopicForm;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 public class TopicsPanel extends JPanel {
     private JTable topicsTable;
@@ -81,6 +82,9 @@ public class TopicsPanel extends JPanel {
 
             tableModel.addRow(row);
         }
+
+        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(tableModel);
+        topicsTable.setRowSorter(sorter);
     }
 
     private void editSelectedTopic() {

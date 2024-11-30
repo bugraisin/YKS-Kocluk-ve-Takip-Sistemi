@@ -8,6 +8,7 @@ import forms.AdvisorForm;
 import models.Advisor;
 import controllers.AdvisorController;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 public class AdvisorPanel extends JPanel {
     private JTable advisorsTable;
@@ -90,6 +91,9 @@ public class AdvisorPanel extends JPanel {
 
             tableModel.addRow(row);
         }
+
+        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(tableModel);
+        advisorsTable.setRowSorter(sorter);
     }
 
     private void editSelectedAdvisor() {

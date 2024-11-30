@@ -8,6 +8,7 @@ import controllers.ScheduleController;
 import models.Schedule;
 import forms.ScheduleForm;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 public class SchedulesPanel extends JPanel {
     private JTable schedulesTable;
@@ -85,6 +86,9 @@ public class SchedulesPanel extends JPanel {
 
             tableModel.addRow(row);
         }
+
+        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(tableModel);
+        schedulesTable.setRowSorter(sorter);
     }
 
     private void editSelectedSchedule() {

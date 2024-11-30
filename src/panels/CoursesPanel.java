@@ -8,6 +8,7 @@ import controllers.CourseController;
 import models.Course;
 import forms.CourseForm;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 public class CoursesPanel extends JPanel {
     private JTable coursesTable;
@@ -81,6 +82,9 @@ public class CoursesPanel extends JPanel {
 
             tableModel.addRow(row);
         }
+
+        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(tableModel);
+        coursesTable.setRowSorter(sorter);
     }
 
     private void editSelectedCourse() {

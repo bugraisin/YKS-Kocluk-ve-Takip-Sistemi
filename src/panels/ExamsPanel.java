@@ -12,6 +12,7 @@ import controllers.ExamController;
 import models.SectionBasedResult;
 
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 public class ExamsPanel extends JPanel {
     private JTable examsTable;
@@ -135,6 +136,9 @@ public class ExamsPanel extends JPanel {
 
             tableModel.addRow(row);
         }
+
+        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(tableModel);
+        examsTable.setRowSorter(sorter);
     }
 
     // Seçili sınavı düzenleme işlemi

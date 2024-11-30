@@ -7,6 +7,7 @@ import controllers.SectionBasedResultController;
 import forms.SectionBasedResultForm;
 import models.SectionBasedResult;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 public class SectionBasedResultPanel extends JPanel {
     private JTable resultsTable;
@@ -82,6 +83,9 @@ public class SectionBasedResultPanel extends JPanel {
 
             tableModel.addRow(row);
         }
+
+        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(tableModel);
+        resultsTable.setRowSorter(sorter);
     }
 
     private void editSelectedResult() {
